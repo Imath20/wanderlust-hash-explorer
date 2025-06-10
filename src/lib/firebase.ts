@@ -44,5 +44,10 @@ try {
   throw error;
 }
 
+// Check if user is admin
+export const isAdmin = (user: any) => {
+  return user?.email === 'matbajean@gmail.com';
+};
+
 export { auth, db, storage };
 export default app; 

@@ -4,6 +4,7 @@ import MapModal from './MapModal';
 import { useAuth } from '../contexts/AuthContext';
 import { deleteDestination } from '../services/destinationService';
 import { toast } from '../components/ui/use-toast';
+import { isAdmin } from '../lib/firebase';
 
 interface TravelModalProps {
   destination: {
@@ -80,7 +81,8 @@ const TravelModal = ({ destination, onClose, onDelete }: TravelModalProps) => {
     }
   };
 
-  const canDelete = user && destination.userId === user.uid;
+  // Allow deletion if user owns the post or is admin
+  const canDelete = user && (destination.userId === user.uid || isAdmin(user));
 
   return (
     <>
