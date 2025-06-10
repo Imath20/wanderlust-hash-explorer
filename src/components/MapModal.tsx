@@ -53,18 +53,18 @@ const MapModal = ({ location, onClose }: MapModalProps) => {
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[80vh] overflow-hidden shadow-2xl relative">
+      <div className="bg-white dark:bg-gray-800 rounded-3xl max-w-4xl w-full max-h-[80vh] overflow-hidden shadow-2xl relative">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-all duration-200 shadow-lg"
+          className="absolute top-4 right-4 z-10 p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 shadow-lg"
         >
-          <X className="h-6 w-6 text-gray-700" />
+          <X className="h-6 w-6 text-gray-700 dark:text-gray-200" />
         </button>
 
         {/* Header */}
-        <div className="p-6 border-b border-gray-200">
-          <h3 className="text-xl font-bold text-gray-800">
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700">
+          <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">
             Locația: {location.name}
           </h3>
         </div>

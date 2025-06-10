@@ -26,18 +26,18 @@ const SearchBar = ({ onSearch, searchTerm }: SearchBarProps) => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      {/* Search Input */}
+    <div className="w-full">
+      {/* Search Input - Full Width */}
       <div className="relative mb-6">
         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <Search className="h-6 w-6 text-gray-400" />
+          <Search className="h-6 w-6 text-gray-400 dark:text-gray-500" />
         </div>
         <input
           type="text"
           value={inputValue}
           onChange={handleInputChange}
           placeholder="Caută destinații sau folosește # pentru hashtag-uri..."
-          className="w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 rounded-2xl focus:border-blue-500 focus:ring-0 outline-none transition-all duration-300 shadow-lg hover:shadow-xl bg-white/80 backdrop-blur-sm"
+          className="w-full pl-12 pr-4 py-4 text-lg border-2 border-gray-200 dark:border-gray-600 rounded-2xl focus:border-blue-500 dark:focus:border-blue-400 focus:ring-0 outline-none transition-all duration-300 shadow-lg hover:shadow-xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-800 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400"
         />
       </div>
 
@@ -47,7 +47,7 @@ const SearchBar = ({ onSearch, searchTerm }: SearchBarProps) => {
           <button
             key={index}
             onClick={() => handleSuggestionClick(suggestion)}
-            className="px-4 py-2 bg-white/70 backdrop-blur-sm text-gray-700 rounded-full border border-gray-200 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md"
+            className="px-4 py-2 bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm text-gray-700 dark:text-gray-300 rounded-full border border-gray-200 dark:border-gray-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:border-blue-300 dark:hover:border-blue-500 hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-200 text-sm font-medium shadow-sm hover:shadow-md"
           >
             {suggestion}
           </button>

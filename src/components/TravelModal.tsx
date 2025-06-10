@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight, Pin } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import MapModal from './MapModal';
 
 interface TravelModalProps {
@@ -29,7 +29,7 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
       setCurrentImageIndex((prevIndex) => 
         prevIndex === destination.images.length - 1 ? 0 : prevIndex + 1
       );
-    }, 4000); // Change image every 4 seconds
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [destination.images.length]);
@@ -52,22 +52,22 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-        <div className="bg-white rounded-3xl max-w-5xl w-full max-h-[90vh] overflow-hidden shadow-2xl relative">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-2">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl w-full h-full max-w-7xl max-h-[95vh] overflow-hidden shadow-2xl relative flex flex-col">
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-all duration-200 shadow-lg"
+            className="absolute top-4 right-4 z-10 p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 shadow-lg"
           >
-            <X className="h-6 w-6 text-gray-700" />
+            <X className="h-6 w-6 text-gray-700 dark:text-gray-200" />
           </button>
 
           <div className="flex flex-col lg:flex-row h-full">
-            {/* Image Slider */}
-            <div className="lg:w-2/3 relative">
-              <div className="relative h-64 lg:h-96 overflow-hidden">
+            {/* Image Slider - Takes most of the space */}
+            <div className="lg:w-3/4 relative flex-1">
+              <div className="relative h-full min-h-[400px] lg:min-h-full overflow-hidden">
                 <img
-                  src={`https://images.unsplash.com/${destination.images[currentImageIndex]}?w=1200&h=800&fit=crop&crop=entropy&auto=format&q=75`}
+                  src={`https://images.unsplash.com/${destination.images[currentImageIndex]}?w=1600&h=1200&fit=crop&crop=entropy&auto=format&q=75`}
                   alt={destination.title}
                   className="w-full h-full object-cover"
                 />
@@ -77,15 +77,15 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
                   <>
                     <button
                       onClick={prevImage}
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-all duration-200 shadow-lg"
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 shadow-lg"
                     >
-                      <ChevronLeft className="h-6 w-6 text-gray-700" />
+                      <ChevronLeft className="h-6 w-6 text-gray-700 dark:text-gray-200" />
                     </button>
                     <button
                       onClick={nextImage}
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-all duration-200 shadow-lg"
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 shadow-lg"
                     >
-                      <ChevronRight className="h-6 w-6 text-gray-700" />
+                      <ChevronRight className="h-6 w-6 text-gray-700 dark:text-gray-200" />
                     </button>
                   </>
                 )}
@@ -109,14 +109,14 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
               </div>
             </div>
 
-            {/* Content */}
-            <div className="lg:w-1/3 p-6 flex flex-col justify-between">
+            {/* Content Sidebar */}
+            <div className="lg:w-1/4 p-6 flex flex-col justify-between bg-white dark:bg-gray-800 lg:max-h-full overflow-y-auto">
               <div>
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">
+                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">
                   {destination.title}
                 </h2>
                 
-                <p className="text-gray-600 mb-6 leading-relaxed">
+                <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
                   {destination.description}
                 </p>
 
@@ -125,7 +125,7 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
                   {destination.hashtags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 bg-gradient-to-r from-blue-100 to-orange-100 text-blue-700 text-sm rounded-full font-medium border border-blue-200"
+                      className="px-3 py-1 bg-gradient-to-r from-blue-100 to-orange-100 dark:from-blue-900/30 dark:to-orange-900/30 text-blue-700 dark:text-blue-300 text-sm rounded-full font-medium border border-blue-200 dark:border-blue-700"
                     >
                       #{tag}
                     </span>
@@ -138,7 +138,7 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
                 onClick={() => setShowMap(true)}
                 className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-blue-500 to-orange-500 text-white rounded-xl hover:from-blue-600 hover:to-orange-600 transition-all duration-200 shadow-lg hover:shadow-xl font-medium"
               >
-                <Pin className="h-5 w-5" />
+                <MapPin className="h-5 w-5" />
                 Vezi pe hartă
               </button>
             </div>
