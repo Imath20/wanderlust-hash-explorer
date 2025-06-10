@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { useTheme } from './ThemeProvider';
 
 interface Location {
   lat: number;
@@ -17,6 +18,7 @@ interface MapModalProps {
 const MapModal = ({ onClose, onLocationSelect, initialLocation }: MapModalProps) => {
   const [selectedLocation, setSelectedLocation] = useState<Location>(initialLocation);
   const [locationName, setLocationName] = useState(initialLocation.name);
+  const { theme } = useTheme();
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -51,7 +53,7 @@ const MapModal = ({ onClose, onLocationSelect, initialLocation }: MapModalProps)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-      <div className="bg-white dark:bg-gray-800 w-full max-w-2xl rounded-lg shadow-2xl overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 w-full max-w-2xl rounded-lg shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
         <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-white dark:bg-gray-800">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">Selectează Locația</h2>
           <button
@@ -62,7 +64,7 @@ const MapModal = ({ onClose, onLocationSelect, initialLocation }: MapModalProps)
           </button>
         </div>
 
-        <div className="p-4 bg-white dark:bg-gray-800">
+        <div className="p-4 bg-white dark:bg-gray-800 overflow-y-auto flex-1">
           <div className="h-[400px] w-full rounded-lg overflow-hidden mb-4">
             <GoogleMap
               mapContainerStyle={{ width: '100%', height: '100%' }}
@@ -70,18 +72,18 @@ const MapModal = ({ onClose, onLocationSelect, initialLocation }: MapModalProps)
               zoom={13}
               onClick={handleMapClick}
               options={{
-                styles: [
+                styles: theme === 'dark' ? [
                   {
                     featureType: 'all',
                     elementType: 'all',
                     stylers: [
                       { 
-                        invert_lightness: window.matchMedia('(prefers-color-scheme: dark)').matches,
-                        saturation: window.matchMedia('(prefers-color-scheme: dark)').matches ? 100 : 0
+                        invert_lightness: true,
+                        saturation: 100
                       }
                     ]
                   }
-                ]
+                ] : []
               }}
             >
               <Marker position={selectedLocation} />
