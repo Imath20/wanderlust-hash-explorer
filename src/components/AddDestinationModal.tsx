@@ -76,14 +76,14 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-0 sm:p-4">
-      <div className="bg-[#1a1a1a] w-full h-full sm:h-auto sm:max-h-[90vh] sm:w-full sm:max-w-lg overflow-hidden sm:rounded-lg shadow-2xl">
+      <div className="bg-white dark:bg-gray-800 w-full h-full sm:h-auto sm:max-h-[90vh] sm:w-full sm:max-w-lg overflow-hidden sm:rounded-lg shadow-2xl">
         <div className="h-full sm:h-auto overflow-y-auto">
-          <div className="sticky top-0 z-10 bg-[#1a1a1a] p-4 sm:p-6 border-b border-gray-700">
+          <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex justify-between items-center">
-              <h2 className="text-xl sm:text-2xl font-bold text-white">Adaugă o Nouă Destinație</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Adaugă o Nouă Destinație</h2>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-white transition-colors p-1"
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white transition-colors p-1"
               >
                 <X className="h-5 w-5 sm:h-6 sm:w-6" />
               </button>
@@ -93,7 +93,7 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
           <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-6">
             {/* Title Input */}
             <div>
-              <label className="block text-sm font-medium text-white mb-1 sm:mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1 sm:mb-2">
                 Titlu <span className="text-red-500">*</span>
               </label>
               <input
@@ -101,14 +101,14 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Introdu titlul destinației"
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-[#242424] border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
                 required
               />
             </div>
 
             {/* Description Input */}
             <div>
-              <label className="block text-sm font-medium text-white mb-1 sm:mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1 sm:mb-2">
                 Descriere <span className="text-red-500">*</span>
               </label>
               <textarea
@@ -116,14 +116,14 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Descrie destinația"
                 rows={4}
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-[#242424] border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
                 required
               />
             </div>
 
             {/* Image Upload */}
             <div>
-              <label className="block text-sm font-medium text-white mb-1 sm:mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1 sm:mb-2">
                 Imagini <span className="text-red-500">*</span>
               </label>
               <button
@@ -170,7 +170,7 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
 
             {/* Hashtags Input */}
             <div>
-              <label className="block text-sm font-medium text-white mb-1 sm:mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1 sm:mb-2">
                 Hashtag-uri
               </label>
               <div className="flex gap-2">
@@ -180,7 +180,7 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
                   onChange={(e) => setHashtagInput(e.target.value)}
                   onKeyDown={handleHashtagKeyDown}
                   placeholder="Adaugă un hashtag și apasă Enter"
-                  className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-[#242424] border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
+                  className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
                 />
                 <button
                   type="button"
@@ -199,13 +199,13 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
                 {hashtags.map((tag, index) => (
                   <span
                     key={index}
-                    className="px-2 sm:px-3 py-1 bg-[#242424] text-white text-xs sm:text-sm rounded-full flex items-center gap-1 sm:gap-2"
+                    className="px-2 sm:px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white text-xs sm:text-sm rounded-full flex items-center gap-1 sm:gap-2"
                   >
                     #{tag}
                     <button
                       type="button"
                       onClick={() => removeHashtag(tag)}
-                      className="text-gray-400 hover:text-red-500 p-0.5"
+                      className="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-500 p-0.5"
                     >
                       <X className="h-3 w-3 sm:h-4 sm:w-4" />
                     </button>
@@ -216,7 +216,7 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
 
             {/* Location Selection */}
             <div>
-              <label className="block text-sm font-medium text-white mb-1 sm:mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1 sm:mb-2">
                 Locație
               </label>
               <button
@@ -229,13 +229,13 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
                 </svg>
                 Alege pe hartă
               </button>
-              <div className="mt-1 text-sm text-gray-400">
+              <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                 Locație selectată: {location.name}
               </div>
             </div>
 
             {/* Submit Button - Fixed at bottom on mobile */}
-            <div className="sticky bottom-0 left-0 right-0 bg-[#1a1a1a] p-4 sm:p-0 -mx-4 sm:mx-0 mt-4 sm:mt-6">
+            <div className="sticky bottom-0 left-0 right-0 bg-white dark:bg-gray-800 p-4 sm:p-0 -mx-4 sm:mx-0 mt-4 sm:mt-6">
               <button
                 type="submit"
                 className="w-full px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-medium text-sm sm:text-base"
