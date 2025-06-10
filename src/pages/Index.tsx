@@ -215,43 +215,41 @@ const IndexContent = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-50 to-gray-50 dark:from-[#242424] dark:via-[#242424] dark:to-[#242424]">
-      <div className="w-full px-6 py-8">
-        {/* Header with Logo, Auth, and Theme Toggle */}
-        <div className="flex justify-between items-start mb-12">
-          <div className="flex-1 text-center">
-            <div className="flex items-center justify-center gap-4 mb-4">
-              <h1 className="text-5xl font-bold text-black dark:text-white">
-                Descoperă Lumea
-              </h1>
-            </div>
-            <p className="text-xl text-gray-600 dark:text-white mb-8">
-              Găsește următoarea ta aventură
-            </p>
-          </div>
-          <div className="flex items-center gap-4">
-            {user ? (
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-              >
-                <LogOut className="h-5 w-5" />
-                Deconectare
-              </button>
-            ) : (
-              <button
-                onClick={handleLogin}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-              >
-                <LogIn className="h-5 w-5" />
-                Conectare cu Google
-              </button>
-            )}
-            <ThemeToggle />
-          </div>
+      <div className="w-full px-4 sm:px-6 py-4 sm:py-8">
+        {/* Auth and Theme Buttons - Moved to top */}
+        <div className="flex justify-end items-center gap-2 sm:gap-4 mb-8">
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm sm:text-base"
+            >
+              <LogOut className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span className="hidden sm:inline">Deconectare</span>
+            </button>
+          ) : (
+            <button
+              onClick={handleLogin}
+              className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm sm:text-base"
+            >
+              <LogIn className="h-4 w-4 sm:h-5 sm:w-5" />
+              <span className="hidden sm:inline">Conectare cu Google</span>
+            </button>
+          )}
+          <ThemeToggle />
+        </div>
+
+        {/* Title Section */}
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-black dark:text-white mb-2 sm:mb-4">
+            Descoperă Lumea
+          </h1>
+          <p className="text-lg sm:text-xl text-gray-600 dark:text-white">
+            Găsește următoarea ta aventură
+          </p>
         </div>
         
         {/* Search Bar */}
-        <div className="mb-12">
+        <div className="mb-8 sm:mb-12">
           <SearchBar onSearch={handleSearch} searchTerm={searchTerm} />
         </div>
 
