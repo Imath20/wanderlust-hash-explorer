@@ -222,7 +222,7 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
               <button
                 type="button"
                 onClick={() => setShowMap(true)}
-                className="w-full px-4 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-orange-500 text-white rounded-lg hover:from-blue-600 hover:to-orange-600 transition-colors flex items-center justify-center gap-2 text-sm sm:text-base"
+                className="w-full px-4 py-2 sm:py-3 bg-white dark:bg-gradient-to-r dark:from-blue-500 dark:to-orange-500 text-gray-900 dark:text-white border border-gray-300 dark:border-transparent rounded-lg hover:bg-gray-50 dark:hover:from-blue-600 dark:hover:to-orange-600 transition-colors flex items-center justify-center gap-2 text-sm sm:text-base"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
