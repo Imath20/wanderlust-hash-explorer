@@ -2,7 +2,7 @@ import { db, auth, isAdmin } from '../lib/firebase';
 import { collection, addDoc, getDocs, query, orderBy, Timestamp, deleteDoc, doc, getDoc } from 'firebase/firestore';
 
 export interface Destination {
-  id?: string;
+  id: string;
   title: string;
   description: string;
   hashtags: string[];
