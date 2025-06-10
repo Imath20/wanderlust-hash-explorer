@@ -90,7 +90,7 @@ const TravelModal = ({ destination, onClose, onDelete }: TravelModalProps) => {
   return (
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm">
-        <div className="bg-white dark:bg-[#242424] rounded-2xl w-full h-full overflow-hidden shadow-2xl relative flex flex-col">
+        <div className="bg-white dark:bg-[#242424] rounded-2xl w-full h-full max-h-screen overflow-y-auto shadow-2xl relative flex flex-col">
           {/* Close Button */}
           <button
             onClick={onClose}
