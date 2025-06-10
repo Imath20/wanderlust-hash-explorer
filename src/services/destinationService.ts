@@ -14,16 +14,29 @@ export interface Destination {
   };
   createdAt?: Timestamp;
   userId?: string;
+  createdBy?: {
+    email?: string;
+  };
 }
 
 export const addDestination = async (destination: Omit<Destination, 'id'>, userId: string) => {
   try {
+    const currentUser = auth.currentUser;
     const docRef = await addDoc(collection(db, 'destinations'), {
       ...destination,
       userId,
-      createdAt: Timestamp.now()
+      createdAt: Timestamp.now(),
+      createdBy: {
+        email: currentUser?.email || null
+      }
     });
-    return { id: docRef.id, ...destination };
+    return { 
+      id: docRef.id, 
+      ...destination,
+      createdBy: {
+        email: currentUser?.email || null
+      }
+    };
   } catch (error) {
     console.error('Error adding destination:', error);
     throw error;

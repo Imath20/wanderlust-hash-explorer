@@ -19,6 +19,9 @@ interface TravelModalProps {
       name: string;
     };
     userId?: string;
+    createdBy?: {
+      email?: string;
+    };
   };
   onClose: () => void;
   onDelete?: () => void;
@@ -176,6 +179,15 @@ const TravelModal = ({ destination, onClose, onDelete }: TravelModalProps) => {
                     </span>
                   ))}
                 </div>
+
+                {/* Admin Label */}
+                {destination.createdBy?.email === "matbajean@gmail.com" && (
+                  <div className="mb-6">
+                    <span className="px-3 py-1 bg-blue-500 text-white text-sm rounded-full font-medium">
+                      Dev
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Map Button */}
