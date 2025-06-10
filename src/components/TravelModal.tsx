@@ -53,15 +53,11 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
   return (
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm">
-        <div 
-          className="bg-white rounded-2xl w-full h-full overflow-hidden shadow-2xl relative flex flex-col"
-          style={{backgroundColor: 'var(--card)'}}
-        >
+        <div className="bg-white dark:bg-gray-800 rounded-2xl w-full h-full overflow-hidden shadow-2xl relative flex flex-col">
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-all duration-200 shadow-lg"
-            style={{backgroundColor: 'var(--card)'}}
+            className="absolute top-4 right-4 z-10 p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 shadow-lg"
           >
             <X className="h-6 w-6 text-gray-700 dark:text-gray-200" />
           </button>
@@ -81,15 +77,13 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
                   <>
                     <button
                       onClick={prevImage}
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-all duration-200 shadow-lg"
-                      style={{backgroundColor: 'var(--card)'}}
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 shadow-lg"
                     >
                       <ChevronLeft className="h-6 w-6 text-gray-700 dark:text-gray-200" />
                     </button>
                     <button
                       onClick={nextImage}
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-all duration-200 shadow-lg"
-                      style={{backgroundColor: 'var(--card)'}}
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 shadow-lg"
                     >
                       <ChevronRight className="h-6 w-6 text-gray-700 dark:text-gray-200" />
                     </button>
@@ -116,12 +110,9 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
             </div>
 
             {/* Content Sidebar */}
-            <div 
-              className="lg:w-1/4 p-6 flex flex-col justify-between bg-white lg:max-h-full overflow-y-auto"
-              style={{backgroundColor: 'var(--card)'}}
-            >
+            <div className="lg:w-1/4 p-6 flex flex-col justify-between bg-white dark:bg-gray-800 lg:max-h-full overflow-y-auto">
               <div>
-                <h2 className="text-2xl font-bold text-black dark:text-white mb-4">
+                <h2 className="text-2xl font-bold text-black dark:text-[#242424] mb-4">
                   {destination.title}
                 </h2>
                 
