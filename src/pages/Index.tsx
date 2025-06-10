@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
 import TravelCard from '../components/TravelCard';
 import TravelModal from '../components/TravelModal';
@@ -6,7 +6,10 @@ import AddDestinationModal from '../components/AddDestinationModal';
 import ThemeToggle from '../components/ThemeToggle';
 import { ThemeProvider } from '../components/ThemeProvider';
 import { travelDestinations } from '../data/travelData';
-import { Plus } from 'lucide-react';
+import { Plus, LogIn, LogOut } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { toast } from '../components/ui/use-toast';
+import { Destination, addDestination, getDestinations } from '../services/destinationService';
 
 const Footer = () => (
   <footer className="w-full bg-white/80 dark:bg-[#242424]/80 backdrop-blur-sm py-12 mt-20">
@@ -92,11 +95,35 @@ const Footer = () => (
 );
 
 const IndexContent = () => {
+  const { user, signInWithGoogle, logout } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedDestination, setSelectedDestination] = useState(null);
+  const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [destinations, setDestinations] = useState(travelDestinations);
-  const [filteredDestinations, setFilteredDestinations] = useState(destinations);
+  const [destinations, setDestinations] = useState<Destination[]>([]);
+  const [filteredDestinations, setFilteredDestinations] = useState<Destination[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadDestinations();
+  }, []);
+
+  const loadDestinations = async () => {
+    try {
+      setLoading(true);
+      const loadedDestinations = await getDestinations();
+      setDestinations(loadedDestinations);
+      setFilteredDestinations(loadedDestinations);
+    } catch (error) {
+      console.error('Error loading destinations:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load destinations. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSearch = (term: string) => {
     setSearchTerm(term);
@@ -112,7 +139,7 @@ const IndexContent = () => {
     }
   };
 
-  const handleCardClick = (destination: any) => {
+  const handleCardClick = (destination: Destination) => {
     setSelectedDestination(destination);
   };
 
@@ -120,21 +147,76 @@ const IndexContent = () => {
     setSelectedDestination(null);
   };
 
-  const handleAddDestination = (newDestination: any) => {
-    const destinationWithId = {
-      ...newDestination,
-      id: destinations.length + 1,
-      images: newDestination.images
-    };
-    const updatedDestinations = [...destinations, destinationWithId];
-    setDestinations(updatedDestinations);
-    setFilteredDestinations(updatedDestinations);
+  const handleAddDestination = async (newDestination: Omit<Destination, 'id'>) => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign in to add a destination.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    try {
+      const addedDestination = await addDestination(newDestination, user.uid);
+      setDestinations(prev => [addedDestination, ...prev]);
+      setFilteredDestinations(prev => [addedDestination, ...prev]);
+      toast({
+        title: "Success",
+        description: "Destination added successfully!",
+      });
+    } catch (error) {
+      console.error('Error adding destination:', error);
+      toast({
+        title: "Error",
+        description: "Failed to add destination. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      await signInWithGoogle();
+      toast({
+        title: "Success",
+        description: "Successfully signed in!",
+      });
+    } catch (error) {
+      console.error('Login failed:', error);
+      toast({
+        title: "Login Failed",
+        description: error instanceof Error ? error.message : "Could not sign in with Google. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast({
+        title: "Logged Out",
+        description: "You have been successfully logged out.",
+      });
+    } catch (error) {
+      console.error('Logout failed:', error);
+      toast({
+        title: "Logout Failed",
+        description: error instanceof Error ? error.message : "Could not log out. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleDelete = () => {
+    loadDestinations(); // Reload destinations after deletion
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-gray-50 to-gray-50 dark:from-[#242424] dark:via-[#242424] dark:to-[#242424]">
       <div className="w-full px-6 py-8">
-        {/* Header with Logo and Theme Toggle */}
+        {/* Header with Logo, Auth, and Theme Toggle */}
         <div className="flex justify-between items-start mb-12">
           <div className="flex-1 text-center">
             <div className="flex items-center justify-center gap-4 mb-4">
@@ -146,49 +228,81 @@ const IndexContent = () => {
               Găsește următoarea ta aventură
             </p>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-4">
+            {user ? (
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+              >
+                <LogOut className="h-5 w-5" />
+                Deconectare
+              </button>
+            ) : (
+              <button
+                onClick={handleLogin}
+                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                <LogIn className="h-5 w-5" />
+                Conectare cu Google
+              </button>
+            )}
+            <ThemeToggle />
+          </div>
         </div>
         
-        {/* Search Bar - Full Width */}
+        {/* Search Bar */}
         <div className="mb-12">
           <SearchBar onSearch={handleSearch} searchTerm={searchTerm} />
         </div>
 
-        {/* Travel Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mb-12">
-          {filteredDestinations.map((destination) => (
-            <TravelCard
-              key={destination.id}
-              destination={{
-                ...destination,
-                images: destination.images.map(img => 
-                  img.startsWith('data:') ? img : `https://images.unsplash.com/${img}?w=800&h=600&fit=crop&crop=entropy&auto=format&q=75`
-                )
-              }}
-              onClick={() => handleCardClick(destination)}
-            />
-          ))}
-        </div>
-
-        {/* No results message */}
-        {filteredDestinations.length === 0 && (
+        {/* Loading State */}
+        {loading ? (
           <div className="text-center py-12">
             <p className="text-xl text-gray-600 dark:text-white">
-              Nu am găsit destinații pentru "{searchTerm}"
-            </p>
-            <p className="text-gray-500 dark:text-white mt-2">
-              Încearcă să cauți altceva sau explorează toate destinațiile
+              Loading destinations...
             </p>
           </div>
+        ) : (
+          <>
+            {/* Travel Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mb-12">
+              {filteredDestinations.map((destination) => (
+                <TravelCard
+                  key={destination.id}
+                  destination={{
+                    ...destination,
+                    images: destination.images.map(img => 
+                      img.startsWith('data:') ? img : `https://images.unsplash.com/${img}?w=800&h=600&fit=crop&crop=entropy&auto=format&q=75`
+                    )
+                  }}
+                  onClick={() => handleCardClick(destination)}
+                />
+              ))}
+            </div>
+
+            {/* No results message */}
+            {filteredDestinations.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-xl text-gray-600 dark:text-white">
+                  Nu am găsit destinații pentru "{searchTerm}"
+                </p>
+                <p className="text-gray-500 dark:text-white mt-2">
+                  Încearcă să cauți altceva sau explorează toate destinațiile
+                </p>
+              </div>
+            )}
+          </>
         )}
 
-        {/* Floating Add Button */}
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-r from-blue-500 to-orange-500 text-white rounded-full hover:from-blue-600 hover:to-orange-600 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center z-10 hover:scale-110"
-        >
-          <Plus className="h-8 w-8" />
-        </button>
+        {/* Floating Add Button - Only show if user is logged in */}
+        {user && (
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-r from-blue-500 to-orange-500 text-white rounded-full hover:from-blue-600 hover:to-orange-600 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center z-10 hover:scale-110"
+          >
+            <Plus className="h-8 w-8" />
+          </button>
+        )}
 
         {/* Travel Modal */}
         {selectedDestination && (
@@ -200,6 +314,7 @@ const IndexContent = () => {
               )
             }}
             onClose={closeModal}
+            onDelete={handleDelete}
           />
         )}
 
@@ -207,7 +322,7 @@ const IndexContent = () => {
         {showAddModal && (
           <AddDestinationModal
             onClose={() => setShowAddModal(false)}
-            onSave={handleAddDestination}
+            onAdd={handleAddDestination}
           />
         )}
       </div>

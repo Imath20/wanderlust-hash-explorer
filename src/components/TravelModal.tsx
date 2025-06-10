@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, MapPin, Trash2 } from 'lucide-react';
 import MapModal from './MapModal';
+import { useAuth } from '../contexts/AuthContext';
+import { deleteDestination } from '../services/destinationService';
+import { toast } from '../components/ui/use-toast';
 
 interface TravelModalProps {
   destination: {
-    id: number;
+    id?: string;
     title: string;
     description: string;
     images: string[];
@@ -14,13 +17,17 @@ interface TravelModalProps {
       lng: number;
       name: string;
     };
+    userId?: string;
   };
   onClose: () => void;
+  onDelete?: () => void;
 }
 
-const TravelModal = ({ destination, onClose }: TravelModalProps) => {
+const TravelModal = ({ destination, onClose, onDelete }: TravelModalProps) => {
+  const { user } = useAuth();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showMap, setShowMap] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Disable body scrolling when modal is open
   useEffect(() => {
@@ -41,21 +48,39 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
     return () => clearInterval(interval);
   }, [destination.images.length]);
 
-  const nextImage = () => {
-    setCurrentImageIndex((prevIndex) => 
-      prevIndex === destination.images.length - 1 ? 0 : prevIndex + 1
-    );
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prev) => (prev === 0 ? destination.images.length - 1 : prev - 1));
   };
 
-  const prevImage = () => {
-    setCurrentImageIndex((prevIndex) => 
-      prevIndex === 0 ? destination.images.length - 1 : prevIndex - 1
-    );
+  const handleNextImage = () => {
+    setCurrentImageIndex((prev) => (prev === destination.images.length - 1 ? 0 : prev + 1));
   };
 
-  const goToImage = (index: number) => {
-    setCurrentImageIndex(index);
+  const handleDelete = async () => {
+    if (!destination.id) return;
+    
+    try {
+      setIsDeleting(true);
+      await deleteDestination(destination.id);
+      toast({
+        title: "Success",
+        description: "Destination deleted successfully!",
+      });
+      onDelete?.();
+      onClose();
+    } catch (error) {
+      console.error('Error deleting destination:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete destination. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsDeleting(false);
+    }
   };
+
+  const canDelete = user && destination.userId === user.uid;
 
   return (
     <>
@@ -68,6 +93,17 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
           >
             <X className="h-6 w-6 text-gray-700 dark:text-white" />
           </button>
+
+          {/* Delete Button - Only show if user can delete */}
+          {canDelete && (
+            <button
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="absolute top-4 right-16 z-10 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <Trash2 className="h-6 w-6" />
+            </button>
+          )}
 
           <div className="flex flex-col lg:flex-row h-full">
             {/* Image Slider - Takes most of the space */}
@@ -83,16 +119,16 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
                 {destination.images.length > 1 && (
                   <>
                     <button
-                      onClick={prevImage}
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/80 dark:bg-[#242424]/80 backdrop-blur-sm rounded-full hover:bg-white dark:hover:bg-[#242424] transition-all duration-200 shadow-lg"
+                      onClick={handlePrevImage}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-black/75"
                     >
-                      <ChevronLeft className="h-6 w-6 text-gray-700 dark:text-white" />
+                      <X className="h-6 w-6 transform rotate-45" />
                     </button>
                     <button
-                      onClick={nextImage}
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/80 dark:bg-[#242424]/80 backdrop-blur-sm rounded-full hover:bg-white dark:hover:bg-[#242424] transition-all duration-200 shadow-lg"
+                      onClick={handleNextImage}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-black/75"
                     >
-                      <ChevronRight className="h-6 w-6 text-gray-700 dark:text-white" />
+                      <X className="h-6 w-6 transform -rotate-45" />
                     </button>
                   </>
                 )}
@@ -103,7 +139,7 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
                     {destination.images.map((_, index) => (
                       <button
                         key={index}
-                        onClick={() => goToImage(index)}
+                        onClick={() => setCurrentImageIndex(index)}
                         className={`w-3 h-3 rounded-full transition-all duration-200 ${
                           index === currentImageIndex 
                             ? 'bg-white shadow-lg' 
