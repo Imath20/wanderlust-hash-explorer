@@ -1,5 +1,5 @@
-import { db } from '../lib/firebase';
-import { collection, addDoc, getDocs, query, orderBy, Timestamp, deleteDoc, doc } from 'firebase/firestore';
+import { db, auth, isAdmin } from '../lib/firebase';
+import { collection, addDoc, getDocs, query, orderBy, Timestamp, deleteDoc, doc, getDoc } from 'firebase/firestore';
 
 export interface Destination {
   id?: string;
@@ -46,7 +46,28 @@ export const getDestinations = async () => {
 
 export const deleteDestination = async (destinationId: string) => {
   try {
-    await deleteDoc(doc(db, 'destinations', destinationId));
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      throw new Error('You must be logged in to delete a destination');
+    }
+
+    // Get the destination document first to check permissions
+    const destinationRef = doc(db, 'destinations', destinationId);
+    const destinationDoc = await getDoc(destinationRef);
+    
+    if (!destinationDoc.exists()) {
+      throw new Error('Destination not found');
+    }
+
+    const destinationData = destinationDoc.data();
+    
+    // Check if user has permission to delete
+    if (!isAdmin(currentUser) && destinationData.userId !== currentUser.uid) {
+      throw new Error('You do not have permission to delete this destination');
+    }
+
+    // If we get here, user has permission to delete
+    await deleteDoc(destinationRef);
   } catch (error) {
     console.error('Error deleting destination:', error);
     throw error;

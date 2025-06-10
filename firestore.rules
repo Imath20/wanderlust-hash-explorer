@@ -1,0 +1,16 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return request.auth.token.email == 'matbajean@gmail.com';
+    }
+    
+    match /destinations/{destinationId} {
+      allow read: if true;  // Anyone can read destinations
+      allow create: if request.auth != null;  // Must be logged in to create
+      allow update, delete: if isAdmin() || 
+        (request.auth != null && resource.data.userId == request.auth.uid);  // Admin or owner can update/delete
+    }
+  }
+} 
