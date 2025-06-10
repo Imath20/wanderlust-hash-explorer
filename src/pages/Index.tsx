@@ -1,11 +1,83 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from 'react';
+import SearchBar from '../components/SearchBar';
+import TravelCard from '../components/TravelCard';
+import TravelModal from '../components/TravelModal';
+import { travelDestinations } from '../data/travelData';
 
 const Index = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDestination, setSelectedDestination] = useState(null);
+  const [filteredDestinations, setFilteredDestinations] = useState(travelDestinations);
+
+  const handleSearch = (term: string) => {
+    setSearchTerm(term);
+    if (term.trim() === '') {
+      setFilteredDestinations(travelDestinations);
+    } else {
+      const filtered = travelDestinations.filter(destination => 
+        destination.title.toLowerCase().includes(term.toLowerCase()) ||
+        destination.description.toLowerCase().includes(term.toLowerCase()) ||
+        destination.hashtags.some(tag => tag.toLowerCase().includes(term.toLowerCase().replace('#', '')))
+      );
+      setFilteredDestinations(filtered);
+    }
+  };
+
+  const handleCardClick = (destination: any) => {
+    setSelectedDestination(destination);
+  };
+
+  const closeModal = () => {
+    setSelectedDestination(null);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-orange-50 to-rose-50">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-bold text-gray-800 mb-4 bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
+            Descoperă Lumea
+          </h1>
+          <p className="text-xl text-gray-600 mb-8">
+            Găsește următoarea ta aventură
+          </p>
+          
+          {/* Search Bar */}
+          <SearchBar onSearch={handleSearch} searchTerm={searchTerm} />
+        </div>
+
+        {/* Travel Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {filteredDestinations.map((destination) => (
+            <TravelCard
+              key={destination.id}
+              destination={destination}
+              onClick={() => handleCardClick(destination)}
+            />
+          ))}
+        </div>
+
+        {/* No results message */}
+        {filteredDestinations.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-xl text-gray-600">
+              Nu am găsit destinații pentru "{searchTerm}"
+            </p>
+            <p className="text-gray-500 mt-2">
+              Încearcă să cauți altceva sau explorează toate destinațiile
+            </p>
+          </div>
+        )}
+
+        {/* Travel Modal */}
+        {selectedDestination && (
+          <TravelModal
+            destination={selectedDestination}
+            onClose={closeModal}
+          />
+        )}
       </div>
     </div>
   );
