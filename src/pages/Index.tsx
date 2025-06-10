@@ -35,12 +35,12 @@ const IndexContent = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-orange-50 to-rose-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-orange-50 to-rose-50" style={{backgroundColor: 'var(--background)'}}>
       <div className="w-full px-6 py-8">
         {/* Header with Theme Toggle */}
         <div className="flex justify-between items-start mb-12">
           <div className="flex-1 text-center">
-            <h1 className="text-5xl font-bold text-black dark:text-[#242424] mb-4">
+            <h1 className="text-5xl font-bold text-black dark:text-white mb-4">
               Descoperă Lumea
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
