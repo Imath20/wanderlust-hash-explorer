@@ -53,7 +53,7 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
   return (
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl w-full h-full m-4 overflow-hidden shadow-2xl relative flex flex-col">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl w-full h-full overflow-hidden shadow-2xl relative flex flex-col">
           {/* Close Button */}
           <button
             onClick={onClose}
@@ -112,7 +112,7 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
             {/* Content Sidebar */}
             <div className="lg:w-1/4 p-6 flex flex-col justify-between bg-white dark:bg-gray-800 lg:max-h-full overflow-y-auto">
               <div>
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-4">
+                <h2 className="text-2xl font-bold text-black dark:text-[#242424] mb-4">
                   {destination.title}
                 </h2>
                 
@@ -125,7 +125,7 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
                   {destination.hashtags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 bg-gradient-to-r from-blue-100 to-orange-100 dark:from-blue-900/30 dark:to-orange-900/30 text-blue-700 dark:text-blue-300 text-sm rounded-full font-medium border border-blue-200 dark:border-blue-700"
+                      className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded-full font-medium border border-gray-200 dark:border-gray-600"
                     >
                       #{tag}
                     </span>

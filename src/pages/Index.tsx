@@ -40,7 +40,7 @@ const IndexContent = () => {
         {/* Header with Theme Toggle */}
         <div className="flex justify-between items-start mb-12">
           <div className="flex-1 text-center">
-            <h1 className="text-5xl font-bold text-gray-800 dark:text-gray-100 mb-4 bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
+            <h1 className="text-5xl font-bold text-black dark:text-[#242424] mb-4">
               Descoperă Lumea
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
@@ -55,8 +55,8 @@ const IndexContent = () => {
           <SearchBar onSearch={handleSearch} searchTerm={searchTerm} />
         </div>
 
-        {/* Travel Cards Grid - Full Width */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        {/* Travel Cards Grid - Full Width with smaller gap */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mb-12">
           {filteredDestinations.map((destination) => (
             <TravelCard
               key={destination.id}

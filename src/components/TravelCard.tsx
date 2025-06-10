@@ -35,7 +35,7 @@ const TravelCard = ({ destination, onClick }: TravelCardProps) => {
 
       {/* Content */}
       <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-3 line-clamp-2">
+        <h3 className="text-xl font-bold text-black dark:text-[#242424] mb-3 line-clamp-2">
           {destination.title}
         </h3>
         
@@ -48,7 +48,7 @@ const TravelCard = ({ destination, onClick }: TravelCardProps) => {
           {destination.hashtags.map((tag, index) => (
             <span
               key={index}
-              className="px-3 py-1 bg-gradient-to-r from-blue-100 to-orange-100 dark:from-blue-900/30 dark:to-orange-900/30 text-blue-700 dark:text-blue-300 text-sm rounded-full font-medium border border-blue-200 dark:border-blue-700"
+              className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded-full font-medium border border-gray-200 dark:border-gray-600"
             >
               #{tag}
             </span>
