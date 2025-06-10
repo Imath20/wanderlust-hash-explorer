@@ -77,7 +77,7 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-0 sm:p-4">
       <div className="bg-white dark:bg-gray-800 w-full h-full sm:h-auto sm:max-h-[90vh] sm:w-full sm:max-w-lg overflow-hidden sm:rounded-lg shadow-2xl">
-        <div className="h-full sm:h-auto overflow-y-auto">
+        <div className="h-full sm:h-auto overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
           <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
             <div className="flex justify-between items-center">
               <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Adaugă o Nouă Destinație</h2>
