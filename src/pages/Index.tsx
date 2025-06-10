@@ -12,72 +12,46 @@ import { toast } from '../components/ui/use-toast';
 import { Destination, addDestination, getDestinations } from '../services/destinationService';
 
 const Footer = () => (
-  <footer className="w-full bg-white/80 dark:bg-[#242424]/80 backdrop-blur-sm py-12 mt-20">
-    <div className="max-w-7xl mx-auto px-6">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        {/* About Section */}
-        <div className="col-span-1">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Despre Noi</h3>
-          <p className="text-gray-600 dark:text-gray-300">
-            Explorează cele mai frumoase destinații din lume cu ajutorul platformei noastre.
-            Găsește locuri unice și creează amintiri de neuitat.
-          </p>
-        </div>
+  <footer className="w-full bg-white/80 dark:bg-[#242424]/80 backdrop-blur-sm py-6 mt-8">
+    <div className="container mx-auto px-4">
+      {/* About Section - Full Width and Centered */}
+      <div className="w-full mb-6 text-center">
+        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Despre Noi</h3>
+        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          Explorează cele mai frumoase destinații din lume cu ajutorul platformei noastre.
+          Găsește locuri unice și creează amintiri de neuitat.
+        </p>
+      </div>
 
-        {/* Quick Links */}
-        <div className="col-span-1">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Link-uri Rapide</h3>
-          <ul className="space-y-2">
-            <li>
-              <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
-                Destinații Populare
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
-                Oferte Speciale
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
-                Ghiduri de Călătorie
-              </a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
-                Blog
-              </a>
-            </li>
-          </ul>
-        </div>
-
+      {/* Contact and Social Media - Side by Side */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Contact Info */}
-        <div className="col-span-1">
+        <div className="text-center">
           <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Contact</h3>
-          <ul className="space-y-2">
-            <li className="text-gray-600 dark:text-gray-300">
+          <div className="flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-6">
+            <span className="text-gray-600 dark:text-gray-300 whitespace-nowrap">
               Email: contact@wanderlust.com
-            </li>
-            <li className="text-gray-600 dark:text-gray-300">
+            </span>
+            <span className="text-gray-600 dark:text-gray-300 whitespace-nowrap">
               Tel: +40 123 456 789
-            </li>
-            <li className="text-gray-600 dark:text-gray-300">
+            </span>
+            <span className="text-gray-600 dark:text-gray-300 whitespace-nowrap">
               Adresă: Strada Victoriei 123, București
-            </li>
-          </ul>
+            </span>
+          </div>
         </div>
 
         {/* Social Media */}
-        <div className="col-span-1">
+        <div className="text-center">
           <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Social Media</h3>
-          <div className="flex space-x-4">
-            <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
+          <div className="flex flex-col md:flex-row justify-center items-center space-y-2 md:space-y-0 md:space-x-6">
+            <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 whitespace-nowrap">
               Facebook
             </a>
-            <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
+            <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 whitespace-nowrap">
               Instagram
             </a>
-            <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400">
+            <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-blue-500 dark:hover:text-blue-400 whitespace-nowrap">
               Twitter
             </a>
           </div>
@@ -85,10 +59,11 @@ const Footer = () => (
       </div>
 
       {/* Copyright */}
-      <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+      <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
         <p className="text-center text-gray-600 dark:text-gray-300">
-          © {new Date().getFullYear()} Wanderlust. Toate drepturile rezervate.
+          © {new Date().getFullYear()} Travelling. Toate drepturile rezervate.
         </p>
+        <p className="text-center text-gray-600 dark:text-gray-300">a Ba-Ma creation</p>
       </div>
     </div>
   </footer>
@@ -116,8 +91,8 @@ const IndexContent = () => {
     } catch (error) {
       console.error('Error loading destinations:', error);
       toast({
-        title: "Error",
-        description: "Failed to load destinations. Please try again.",
+        title: "Eroare",
+        description: "Nu s-au putut încărca destinațiile. Te rugăm să încerci din nou.",
         variant: "destructive"
       });
     } finally {
@@ -150,8 +125,8 @@ const IndexContent = () => {
   const handleAddDestination = async (newDestination: Omit<Destination, 'id'>) => {
     if (!user) {
       toast({
-        title: "Authentication Required",
-        description: "Please sign in to add a destination.",
+        title: "Autentificare Necesară",
+        description: "Te rugăm să te autentifici pentru a adăuga o destinație.",
         variant: "destructive"
       });
       return;
@@ -162,14 +137,14 @@ const IndexContent = () => {
       setDestinations(prev => [addedDestination, ...prev]);
       setFilteredDestinations(prev => [addedDestination, ...prev]);
       toast({
-        title: "Success",
-        description: "Destination added successfully!",
+        title: "Succes",
+        description: "Destinație adăugată cu succes!",
       });
     } catch (error) {
       console.error('Error adding destination:', error);
       toast({
-        title: "Error",
-        description: "Failed to add destination. Please try again.",
+        title: "Eroare",
+        description: "Nu s-a putut adăuga destinația. Te rugăm să încerci din nou.",
         variant: "destructive"
       });
     }
@@ -179,14 +154,14 @@ const IndexContent = () => {
     try {
       await signInWithGoogle();
       toast({
-        title: "Success",
-        description: "Successfully signed in!",
+        title: "Succes",
+        description: "Autentificare reușită!",
       });
     } catch (error) {
       console.error('Login failed:', error);
       toast({
-        title: "Login Failed",
-        description: error instanceof Error ? error.message : "Could not sign in with Google. Please try again.",
+        title: "Autentificare Eșuată",
+        description: error instanceof Error ? error.message : "Nu s-a putut face autentificarea cu Google. Te rugăm să încerci din nou.",
         variant: "destructive"
       });
     }
@@ -196,14 +171,14 @@ const IndexContent = () => {
     try {
       await logout();
       toast({
-        title: "Logged Out",
-        description: "You have been successfully logged out.",
+        title: "Deconectat",
+        description: "Ai fost deconectat cu succes.",
       });
     } catch (error) {
       console.error('Logout failed:', error);
       toast({
-        title: "Logout Failed",
-        description: error instanceof Error ? error.message : "Could not log out. Please try again.",
+        title: "Deconectare Eșuată",
+        description: error instanceof Error ? error.message : "Nu s-a putut face deconectarea. Te rugăm să încerci din nou.",
         variant: "destructive"
       });
     }
@@ -257,7 +232,7 @@ const IndexContent = () => {
         {loading ? (
           <div className="text-center py-12">
             <p className="text-xl text-gray-600 dark:text-white">
-              Loading destinations...
+              Se încarcă destinațiile...
             </p>
           </div>
         ) : (

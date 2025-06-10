@@ -1,5 +1,6 @@
 import { db, auth, isAdmin } from '../lib/firebase';
 import { collection, addDoc, getDocs, query, orderBy, Timestamp, deleteDoc, doc, getDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export interface Destination {
   id: string;
@@ -19,20 +20,67 @@ export interface Destination {
   };
 }
 
+// Function to compress and resize image
+const compressImage = async (base64Image: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = base64Image;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const MAX_WIDTH = 800;
+      const MAX_HEIGHT = 800;
+      let width = img.width;
+      let height = img.height;
+
+      if (width > height) {
+        if (width > MAX_WIDTH) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+        }
+      } else {
+        if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx?.drawImage(img, 0, 0, width, height);
+      
+      // Convert to JPEG with 0.7 quality
+      const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+      resolve(compressedBase64);
+    };
+    img.onerror = reject;
+  });
+};
+
 export const addDestination = async (destination: Omit<Destination, 'id'>, userId: string) => {
   try {
     const currentUser = auth.currentUser;
+    
+    // Compress all images
+    const compressedImages = await Promise.all(
+      destination.images.map(image => compressImage(image))
+    );
+    
+    // Create destination document with compressed images
     const docRef = await addDoc(collection(db, 'destinations'), {
       ...destination,
+      images: compressedImages,
       userId,
       createdAt: Timestamp.now(),
       createdBy: {
         email: currentUser?.email || null
       }
     });
+    
     return { 
       id: docRef.id, 
       ...destination,
+      images: compressedImages,
       createdBy: {
         email: currentUser?.email || null
       }

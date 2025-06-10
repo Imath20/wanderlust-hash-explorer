@@ -76,20 +76,20 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-0 sm:p-4">
-      <div className="bg-white dark:bg-gray-800 w-full h-full sm:h-auto sm:max-h-[90vh] sm:w-full sm:max-w-lg overflow-hidden sm:rounded-lg shadow-2xl">
-        <div className="h-full sm:h-auto overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
-          <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Adaugă o Nouă Destinație</h2>
-              <button
-                onClick={onClose}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white transition-colors p-1"
-              >
-                <X className="h-5 w-5 sm:h-6 sm:w-6" />
-              </button>
-            </div>
+      <div className="bg-white dark:bg-gray-800 w-full h-full sm:h-auto sm:max-h-[90vh] sm:w-full sm:max-w-lg sm:rounded-lg shadow-2xl flex flex-col">
+        <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
+          <div className="flex justify-between items-center">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Adaugă o Nouă Destinație</h2>
+            <button
+              onClick={onClose}
+              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white transition-colors p-1"
+            >
+              <X className="h-5 w-5 sm:h-6 sm:w-6" />
+            </button>
           </div>
+        </div>
 
+        <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
           <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-6">
             {/* Title Input */}
             <div>
@@ -114,7 +114,7 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full px-3 py-2 sm:py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px] sm:min-h-[120px]"
+                className="w-full px-3 py-2 sm:py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px] sm:min-h-[120px] resize-y"
                 placeholder="Descrie destinația"
                 required
               />
@@ -146,7 +146,7 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
               />
               
               {images.length > 0 && (
-                <div className="mt-3 max-h-[200px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
+                <div className="mt-3 max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
                   <div className="grid grid-cols-3 gap-2 sm:gap-4 p-1">
                     {images.map((image, index) => (
                       <div key={index} className="relative group aspect-square">
@@ -221,8 +221,8 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
               </div>
             </div>
 
-            {/* Submit Button - Fixed at bottom on mobile */}
-            <div className="sticky bottom-0 left-0 right-0 bg-white dark:bg-gray-800 p-4 sm:p-0 -mx-4 sm:mx-0 mt-4 sm:mt-6">
+            {/* Submit Button */}
+            <div className="bg-white dark:bg-gray-800 p-4 border-t border-gray-200 dark:border-gray-700">
               <button
                 type="submit"
                 className="w-full px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-medium text-sm sm:text-base"

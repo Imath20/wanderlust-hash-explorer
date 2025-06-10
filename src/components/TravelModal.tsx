@@ -67,16 +67,16 @@ const TravelModal = ({ destination, onClose, onDelete }: TravelModalProps) => {
       setIsDeleting(true);
       await deleteDestination(destination.id);
       toast({
-        title: "Success",
-        description: "Destination deleted successfully!",
+        title: "Succes",
+        description: "Destinație ștearsă cu succes!",
       });
       onDelete?.();
       onClose();
     } catch (error) {
       console.error('Error deleting destination:', error);
       toast({
-        title: "Error",
-        description: "Failed to delete destination. Please try again.",
+        title: "Eroare",
+        description: "Nu s-a putut șterge destinația. Te rugăm să încerci din nou.",
         variant: "destructive"
       });
     } finally {
@@ -117,7 +117,7 @@ const TravelModal = ({ destination, onClose, onDelete }: TravelModalProps) => {
                 <img
                   src={destination.images[currentImageIndex]}
                   alt={destination.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain bg-black/5"
                 />
 
                 {/* Navigation Arrows */}
@@ -127,13 +127,13 @@ const TravelModal = ({ destination, onClose, onDelete }: TravelModalProps) => {
                       onClick={handlePrevImage}
                       className="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-black/75"
                     >
-                      <X className="h-6 w-6 transform rotate-45" />
+                      <ChevronLeft className="h-6 w-6" />
                     </button>
                     <button
                       onClick={handleNextImage}
                       className="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-black/75"
                     >
-                      <X className="h-6 w-6 transform -rotate-45" />
+                      <ChevronRight className="h-6 w-6" />
                     </button>
                   </>
                 )}
@@ -158,22 +158,22 @@ const TravelModal = ({ destination, onClose, onDelete }: TravelModalProps) => {
             </div>
 
             {/* Content Sidebar */}
-            <div className="lg:w-1/4 p-6 flex flex-col justify-between bg-white dark:bg-[#242424] lg:max-h-full overflow-y-auto">
-              <div>
-                <h2 className="text-2xl font-bold text-black dark:text-white mb-4">
+            <div className="lg:w-1/4 p-4 sm:p-6 flex flex-col h-full">
+              <div className="space-y-4 flex-grow">
+                <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white break-words">
                   {destination.title}
                 </h2>
                 
-                <p className="text-gray-600 dark:text-white mb-6 leading-relaxed">
+                <p className="text-sm sm:text-base text-gray-600 dark:text-white break-words whitespace-pre-wrap">
                   {destination.description}
                 </p>
 
                 {/* Hashtags */}
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {destination.hashtags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 bg-gray-100 dark:bg-[#242424] text-gray-700 dark:text-white text-sm rounded-full font-medium border border-gray-200 dark:border-gray-600"
+                      className="px-2 sm:px-3 py-1 bg-gray-100 dark:bg-[#242424] text-gray-700 dark:text-white text-xs sm:text-sm rounded-full font-medium border border-gray-200 dark:border-gray-600"
                     >
                       #{tag}
                     </span>
@@ -190,14 +190,16 @@ const TravelModal = ({ destination, onClose, onDelete }: TravelModalProps) => {
                 )}
               </div>
 
-              {/* Map Button */}
-              <button
-                onClick={() => setShowMap(true)}
-                className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-blue-500 to-orange-500 text-white rounded-xl hover:from-blue-600 hover:to-orange-600 transition-all duration-200 shadow-lg hover:shadow-xl font-medium"
-              >
-                <MapPin className="h-5 w-5" />
-                Vezi pe hartă
-              </button>
+              {/* Map Button - Now at the bottom */}
+              <div className="mt-6">
+                <button
+                  onClick={() => setShowMap(!showMap)}
+                  className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-orange-500 text-white rounded-lg hover:from-blue-600 hover:to-orange-600 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 font-medium"
+                >
+                  <MapPin className="h-4 w-4" />
+                  {showMap ? "Ascunde harta" : "Vezi pe hartă"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -206,8 +208,9 @@ const TravelModal = ({ destination, onClose, onDelete }: TravelModalProps) => {
       {/* Map Modal */}
       {showMap && (
         <MapModal
-          location={destination.location}
+          initialLocation={destination.location}
           onClose={() => setShowMap(false)}
+          viewOnly={true}
         />
       )}
     </>
