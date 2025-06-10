@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import MapModal from './MapModal';
@@ -22,6 +21,14 @@ interface TravelModalProps {
 const TravelModal = ({ destination, onClose }: TravelModalProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showMap, setShowMap] = useState(false);
+
+  // Disable body scrolling when modal is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
 
   // Auto-scroll functionality
   useEffect(() => {
@@ -53,13 +60,13 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
   return (
     <>
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl w-full h-full overflow-hidden shadow-2xl relative flex flex-col">
+        <div className="bg-white dark:bg-[#242424] rounded-2xl w-full h-full overflow-hidden shadow-2xl relative flex flex-col">
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 shadow-lg"
+            className="absolute top-4 right-4 z-10 p-2 bg-white/90 dark:bg-[#242424]/90 backdrop-blur-sm rounded-full hover:bg-white dark:hover:bg-[#242424] transition-all duration-200 shadow-lg"
           >
-            <X className="h-6 w-6 text-gray-700 dark:text-gray-200" />
+            <X className="h-6 w-6 text-gray-700 dark:text-white" />
           </button>
 
           <div className="flex flex-col lg:flex-row h-full">
@@ -67,7 +74,7 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
             <div className="lg:w-3/4 relative flex-1">
               <div className="relative h-full min-h-[50vh] lg:min-h-full overflow-hidden">
                 <img
-                  src={`https://images.unsplash.com/${destination.images[currentImageIndex]}?w=1600&h=1200&fit=crop&crop=entropy&auto=format&q=75`}
+                  src={destination.images[currentImageIndex]}
                   alt={destination.title}
                   className="w-full h-full object-cover"
                 />
@@ -77,15 +84,15 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
                   <>
                     <button
                       onClick={prevImage}
-                      className="absolute left-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 shadow-lg"
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/80 dark:bg-[#242424]/80 backdrop-blur-sm rounded-full hover:bg-white dark:hover:bg-[#242424] transition-all duration-200 shadow-lg"
                     >
-                      <ChevronLeft className="h-6 w-6 text-gray-700 dark:text-gray-200" />
+                      <ChevronLeft className="h-6 w-6 text-gray-700 dark:text-white" />
                     </button>
                     <button
                       onClick={nextImage}
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-full hover:bg-white dark:hover:bg-gray-800 transition-all duration-200 shadow-lg"
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 p-3 bg-white/80 dark:bg-[#242424]/80 backdrop-blur-sm rounded-full hover:bg-white dark:hover:bg-[#242424] transition-all duration-200 shadow-lg"
                     >
-                      <ChevronRight className="h-6 w-6 text-gray-700 dark:text-gray-200" />
+                      <ChevronRight className="h-6 w-6 text-gray-700 dark:text-white" />
                     </button>
                   </>
                 )}
@@ -110,13 +117,13 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
             </div>
 
             {/* Content Sidebar */}
-            <div className="lg:w-1/4 p-6 flex flex-col justify-between bg-white dark:bg-gray-800 lg:max-h-full overflow-y-auto">
+            <div className="lg:w-1/4 p-6 flex flex-col justify-between bg-white dark:bg-[#242424] lg:max-h-full overflow-y-auto">
               <div>
-                <h2 className="text-2xl font-bold text-black dark:text-[#242424] mb-4">
+                <h2 className="text-2xl font-bold text-black dark:text-white mb-4">
                   {destination.title}
                 </h2>
                 
-                <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+                <p className="text-gray-600 dark:text-white mb-6 leading-relaxed">
                   {destination.description}
                 </p>
 
@@ -125,7 +132,7 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
                   {destination.hashtags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded-full font-medium border border-gray-200 dark:border-gray-600"
+                      className="px-3 py-1 bg-gray-100 dark:bg-[#242424] text-gray-700 dark:text-white text-sm rounded-full font-medium border border-gray-200 dark:border-gray-600"
                     >
                       #{tag}
                     </span>

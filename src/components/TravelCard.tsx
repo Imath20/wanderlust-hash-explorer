@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface TravelCardProps {
@@ -20,13 +19,13 @@ interface TravelCardProps {
 const TravelCard = ({ destination, onClick }: TravelCardProps) => {
   return (
     <div 
-      className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:scale-105 overflow-hidden group"
+      className="bg-white dark:bg-[#242424] rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:scale-105 overflow-hidden group"
       onClick={onClick}
     >
       {/* Image */}
       <div className="relative h-64 overflow-hidden">
         <img
-          src={`https://images.unsplash.com/${destination.images[0]}?w=800&h=600&fit=crop&crop=entropy&auto=format&q=75`}
+          src={destination.images[0]}
           alt={destination.title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
@@ -35,11 +34,11 @@ const TravelCard = ({ destination, onClick }: TravelCardProps) => {
 
       {/* Content */}
       <div className="p-6">
-        <h3 className="text-xl font-bold text-black dark:text-[#242424] mb-3 line-clamp-2">
+        <h3 className="text-xl font-bold text-black dark:text-white mb-3 line-clamp-2">
           {destination.title}
         </h3>
         
-        <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 leading-relaxed">
+        <p className="text-gray-600 dark:text-white mb-4 line-clamp-3 leading-relaxed">
           {destination.description}
         </p>
 
@@ -48,7 +47,7 @@ const TravelCard = ({ destination, onClick }: TravelCardProps) => {
           {destination.hashtags.map((tag, index) => (
             <span
               key={index}
-              className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm rounded-full font-medium border border-gray-200 dark:border-gray-600"
+              className="px-3 py-1 bg-gray-100 dark:bg-[#242424] text-gray-700 dark:text-white text-sm rounded-full font-medium border border-gray-200 dark:border-gray-600"
             >
               #{tag}
             </span>
