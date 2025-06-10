@@ -1,18 +1,8 @@
 import React from 'react';
+import { Destination } from '../services/destinationService';
 
 interface TravelCardProps {
-  destination: {
-    id: number;
-    title: string;
-    description: string;
-    images: string[];
-    hashtags: string[];
-    location: {
-      lat: number;
-      lng: number;
-      name: string;
-    };
-  };
+  destination: Destination;
   onClick: () => void;
 }
 

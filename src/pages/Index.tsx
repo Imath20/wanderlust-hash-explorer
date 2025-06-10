@@ -308,7 +308,12 @@ const IndexContent = () => {
         {selectedDestination && (
           <TravelModal
             destination={{
-              ...selectedDestination,
+              id: selectedDestination.id,
+              userId: selectedDestination.userId,
+              title: selectedDestination.title,
+              description: selectedDestination.description,
+              hashtags: selectedDestination.hashtags,
+              location: selectedDestination.location,
               images: selectedDestination.images.map(img => 
                 img.startsWith('data:') ? img : `https://images.unsplash.com/${img}?w=1600&h=1200&fit=crop&crop=entropy&auto=format&q=75`
               )
