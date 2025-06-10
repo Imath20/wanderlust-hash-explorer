@@ -9,11 +9,11 @@ interface TravelCardProps {
 const TravelCard = ({ destination, onClick }: TravelCardProps) => {
   return (
     <div 
-      className="bg-white dark:bg-[#242424] rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:scale-105 overflow-hidden group"
+      className="bg-white dark:bg-[#242424] rounded-xl sm:rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:scale-[1.02] overflow-hidden group"
       onClick={onClick}
     >
       {/* Image */}
-      <div className="relative h-64 overflow-hidden">
+      <div className="relative h-48 sm:h-56 md:h-64 overflow-hidden">
         <img
           src={destination.images[0]}
           alt={destination.title}
@@ -23,21 +23,21 @@ const TravelCard = ({ destination, onClick }: TravelCardProps) => {
       </div>
 
       {/* Content */}
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-black dark:text-white mb-3 line-clamp-2">
+      <div className="p-4 sm:p-6">
+        <h3 className="text-lg sm:text-xl font-bold text-black dark:text-white mb-2 sm:mb-3 line-clamp-2">
           {destination.title}
         </h3>
         
-        <p className="text-gray-600 dark:text-white mb-4 line-clamp-3 leading-relaxed">
+        <p className="text-sm sm:text-base text-gray-600 dark:text-white mb-3 sm:mb-4 line-clamp-3 leading-relaxed">
           {destination.description}
         </p>
 
         {/* Hashtags */}
-        <div className="flex flex-wrap gap-2 mb-3">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-2 sm:mb-3">
           {destination.hashtags.map((tag, index) => (
             <span
               key={index}
-              className="px-3 py-1 bg-gray-100 dark:bg-[#242424] text-gray-700 dark:text-white text-sm rounded-full font-medium border border-gray-200 dark:border-gray-600"
+              className="px-2 sm:px-3 py-1 bg-gray-100 dark:bg-[#242424] text-gray-700 dark:text-white text-xs sm:text-sm rounded-full font-medium border border-gray-200 dark:border-gray-600"
             >
               #{tag}
             </span>
@@ -46,8 +46,8 @@ const TravelCard = ({ destination, onClick }: TravelCardProps) => {
 
         {/* Dev Label */}
         {destination.createdBy?.email === "matbajean@gmail.com" && (
-          <div className="mt-3">
-            <span className="px-3 py-1 bg-blue-500 text-white text-sm rounded-full font-medium">
+          <div className="mt-2 sm:mt-3">
+            <span className="px-2 sm:px-3 py-1 bg-blue-500 text-white text-xs sm:text-sm rounded-full font-medium">
               Dev
             </span>
           </div>
