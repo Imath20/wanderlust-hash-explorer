@@ -52,8 +52,8 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm p-2">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl w-full h-full max-w-7xl max-h-[95vh] overflow-hidden shadow-2xl relative flex flex-col">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl w-full h-full m-4 overflow-hidden shadow-2xl relative flex flex-col">
           {/* Close Button */}
           <button
             onClick={onClose}
@@ -65,7 +65,7 @@ const TravelModal = ({ destination, onClose }: TravelModalProps) => {
           <div className="flex flex-col lg:flex-row h-full">
             {/* Image Slider - Takes most of the space */}
             <div className="lg:w-3/4 relative flex-1">
-              <div className="relative h-full min-h-[400px] lg:min-h-full overflow-hidden">
+              <div className="relative h-full min-h-[50vh] lg:min-h-full overflow-hidden">
                 <img
                   src={`https://images.unsplash.com/${destination.images[currentImageIndex]}?w=1600&h=1200&fit=crop&crop=entropy&auto=format&q=75`}
                   alt={destination.title}

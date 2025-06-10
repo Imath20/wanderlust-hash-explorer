@@ -39,7 +39,7 @@ const IndexContent = () => {
       <div className="w-full px-6 py-8">
         {/* Header with Theme Toggle */}
         <div className="flex justify-between items-start mb-12">
-          <div className="flex-1">
+          <div className="flex-1 text-center">
             <h1 className="text-5xl font-bold text-gray-800 dark:text-gray-100 mb-4 bg-gradient-to-r from-blue-600 to-orange-500 bg-clip-text text-transparent">
               Descoperă Lumea
             </h1>
