@@ -33,7 +33,7 @@ const TravelCard = ({ destination, onClick }: TravelCardProps) => {
         </p>
 
         {/* Hashtags */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mb-3">
           {destination.hashtags.map((tag, index) => (
             <span
               key={index}
@@ -43,6 +43,15 @@ const TravelCard = ({ destination, onClick }: TravelCardProps) => {
             </span>
           ))}
         </div>
+
+        {/* Dev Label */}
+        {destination.createdBy?.email === "matbajean@gmail.com" && (
+          <div className="mt-3">
+            <span className="px-3 py-1 bg-blue-500 text-white text-sm rounded-full font-medium">
+              Dev
+            </span>
+          </div>
+        )}
       </div>
     </div>
   );

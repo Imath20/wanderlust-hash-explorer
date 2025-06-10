@@ -47,10 +47,16 @@ export const getDestinations = async () => {
   try {
     const q = query(collection(db, 'destinations'), orderBy('createdAt', 'desc'));
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    })) as Destination[];
+    return querySnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        createdBy: {
+          email: data.createdBy?.email || null
+        }
+      } as Destination;
+    });
   } catch (error) {
     console.error('Error getting destinations:', error);
     throw error;
