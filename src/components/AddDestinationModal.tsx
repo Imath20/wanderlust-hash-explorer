@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import MapModal from './MapModal';
 import { Destination } from '../services/destinationService';
+import MapModal from './MapModal';
 
 interface AddDestinationModalProps {
   onClose: () => void;
@@ -100,8 +100,8 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                className="w-full px-3 py-2 sm:py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Introdu titlul destinației"
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
                 required
               />
             </div>
@@ -114,14 +114,13 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+                className="w-full px-3 py-2 sm:py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[100px] sm:min-h-[120px]"
                 placeholder="Descrie destinația"
-                rows={4}
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
                 required
               />
             </div>
 
-            {/* Image Upload */}
+            {/* Images Input */}
             <div>
               <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1 sm:mb-2">
                 Imagini <span className="text-red-500">*</span>
@@ -147,23 +146,25 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
               />
               
               {images.length > 0 && (
-                <div className="mt-3 grid grid-cols-3 gap-2 sm:gap-4">
-                  {images.map((image, index) => (
-                    <div key={index} className="relative group aspect-square">
-                      <img
-                        src={image}
-                        alt={`Preview ${index + 1}`}
-                        className="w-full h-full object-cover rounded-lg"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setImages(images.filter((_, i) => i !== index))}
-                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        <X className="h-3 w-3 sm:h-4 sm:w-4" />
-                      </button>
-                    </div>
-                  ))}
+                <div className="mt-3 max-h-[200px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
+                  <div className="grid grid-cols-3 gap-2 sm:gap-4 p-1">
+                    {images.map((image, index) => (
+                      <div key={index} className="relative group aspect-square">
+                        <img
+                          src={image}
+                          alt={`Preview ${index + 1}`}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setImages(images.filter((_, i) => i !== index))}
+                          className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="h-3 w-3 sm:h-4 sm:w-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -173,28 +174,14 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
               <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1 sm:mb-2">
                 Hashtag-uri
               </label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={hashtagInput}
-                  onChange={(e) => setHashtagInput(e.target.value)}
-                  onKeyDown={handleHashtagKeyDown}
-                  placeholder="Adaugă un hashtag și apasă Enter"
-                  className="flex-1 px-3 sm:px-4 py-2 sm:py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
-                />
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (hashtagInput.trim() && !hashtags.includes(hashtagInput.trim())) {
-                      setHashtags([...hashtags, hashtagInput.trim()]);
-                      setHashtagInput('');
-                    }
-                  }}
-                  className="px-3 sm:px-4 py-2 sm:py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm sm:text-base whitespace-nowrap"
-                >
-                  Adaugă
-                </button>
-              </div>
+              <input
+                type="text"
+                value={hashtagInput}
+                onChange={(e) => setHashtagInput(e.target.value)}
+                onKeyDown={handleHashtagKeyDown}
+                className="w-full px-3 py-2 sm:py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Apasă Enter pentru a adăuga un hashtag"
+              />
               <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2">
                 {hashtags.map((tag, index) => (
                   <span

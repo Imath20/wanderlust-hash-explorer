@@ -52,7 +52,7 @@ const MapModal = ({ onClose, onLocationSelect, initialLocation }: MapModalProps)
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
       <div className="bg-white dark:bg-gray-800 w-full max-w-2xl rounded-lg shadow-2xl overflow-hidden">
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+        <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center bg-white dark:bg-gray-800">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">Selectează Locația</h2>
           <button
             onClick={onClose}
@@ -62,7 +62,7 @@ const MapModal = ({ onClose, onLocationSelect, initialLocation }: MapModalProps)
           </button>
         </div>
 
-        <div className="p-4">
+        <div className="p-4 bg-white dark:bg-gray-800">
           <div className="h-[400px] w-full rounded-lg overflow-hidden mb-4">
             <GoogleMap
               mapContainerStyle={{ width: '100%', height: '100%' }}
@@ -88,7 +88,7 @@ const MapModal = ({ onClose, onLocationSelect, initialLocation }: MapModalProps)
             </GoogleMap>
           </div>
 
-          <div className="mb-4">
+          <div className="bg-white dark:bg-gray-800">
             <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
               Locație Selectată
             </label>
@@ -104,7 +104,7 @@ const MapModal = ({ onClose, onLocationSelect, initialLocation }: MapModalProps)
             />
           </div>
 
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-2 mt-4">
             <button
               onClick={onClose}
               className="px-4 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
