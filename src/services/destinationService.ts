@@ -1,6 +1,5 @@
 import { db, auth, isAdmin } from '../lib/firebase';
 import { collection, addDoc, getDocs, query, orderBy, Timestamp, deleteDoc, doc, getDoc } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export interface Destination {
   id: string;
@@ -20,67 +19,122 @@ export interface Destination {
   };
 }
 
-// Function to compress and resize image
-const compressImage = async (base64Image: string): Promise<string> => {
+// Function to estimate document size more accurately
+const estimateDocumentSize = (data: any): number => {
+  const jsonString = JSON.stringify(data);
+  // Firebase adds some overhead, so we add 10% to be safe
+  return Math.ceil(jsonString.length * 1.1);
+};
+
+// Function to ensure image is under size limit
+const ensureImageSize = async (imageData: string, maxSizeBytes: number): Promise<string> => {
+  const approximateBytes = Math.round((imageData.length * 3) / 4);
+  if (approximateBytes <= maxSizeBytes) return imageData;
+
   return new Promise((resolve, reject) => {
     const img = new Image();
-    img.src = base64Image;
     img.onload = () => {
       const canvas = document.createElement('canvas');
-      const MAX_WIDTH = 800;
-      const MAX_HEIGHT = 800;
       let width = img.width;
       let height = img.height;
-
-      if (width > height) {
-        if (width > MAX_WIDTH) {
-          height *= MAX_WIDTH / width;
-          width = MAX_WIDTH;
-        }
-      } else {
-        if (height > MAX_HEIGHT) {
-          width *= MAX_HEIGHT / height;
-          height = MAX_HEIGHT;
-        }
-      }
-
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext('2d');
-      ctx?.drawImage(img, 0, 0, width, height);
       
-      // Convert to JPEG with 0.7 quality
-      const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
-      resolve(compressedBase64);
+      // Start with more aggressive compression
+      let quality = 0.5; // Start with lower quality
+      let maxDimension = Math.min(1000, Math.max(width, height)); // Start with smaller max dimension
+      
+      const tryCompress = () => {
+        // Calculate new dimensions
+        if (width > height && width > maxDimension) {
+          height = Math.round((height * maxDimension) / width);
+          width = maxDimension;
+        } else if (height > maxDimension) {
+          width = Math.round((width * maxDimension) / height);
+          height = maxDimension;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject(new Error('Could not get canvas context'));
+          return;
+        }
+        
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        const compressed = canvas.toDataURL('image/jpeg', quality);
+        const newSize = Math.round((compressed.length * 3) / 4);
+        
+        if (newSize > maxSizeBytes) {
+          if (quality > 0.15) { // Allow for lower quality
+            quality -= 0.2; // Reduce quality more aggressively
+            return tryCompress();
+          } else if (maxDimension > 500) { // Allow for smaller dimensions
+            maxDimension = maxDimension * 0.5; // Reduce size more aggressively
+            quality = 0.5; // Reset quality for the new size
+            return tryCompress();
+          } else {
+            // If we can't reduce further, use the smallest possible version
+            maxDimension = 500;
+            quality = 0.15;
+            return tryCompress();
+          }
+        }
+        
+        resolve(compressed);
+      };
+      
+      tryCompress();
     };
-    img.onerror = reject;
+    img.onerror = () => reject(new Error('Failed to load image'));
+    img.src = imageData;
   });
 };
 
 export const addDestination = async (destination: Omit<Destination, 'id'>, userId: string) => {
   try {
     const currentUser = auth.currentUser;
-    
-    // Compress all images
-    const compressedImages = await Promise.all(
-      destination.images.map(image => compressImage(image))
+    if (!currentUser) {
+      throw new Error('You must be logged in to add a destination');
+    }
+
+    // Calculate max size per image to stay under Firestore limit
+    const numImages = destination.images.length;
+    const reservedSpace = 25000; // Reserve even more space for other fields
+    const maxSizePerImage = Math.floor((900000 - reservedSpace) / numImages); // Use 900KB limit to be extra safe
+
+    // Process images with size limit per image
+    const processedImages = await Promise.all(
+      destination.images.map(imageData => ensureImageSize(imageData, maxSizePerImage))
     );
     
-    // Create destination document with compressed images
-    const docRef = await addDoc(collection(db, 'destinations'), {
+    // Create the document data
+    const docData = {
       ...destination,
-      images: compressedImages,
+      images: processedImages,
       userId,
       createdAt: Timestamp.now(),
       createdBy: {
         email: currentUser?.email || null
       }
-    });
+    };
+
+    // Estimate document size more accurately
+    const estimatedSize = estimateDocumentSize(docData);
+    if (estimatedSize >= 900000) { // Use 900KB as very safe limit
+      console.warn('Document size estimation:', estimatedSize, 'bytes');
+      throw new Error('Imaginile sunt în continuare prea mari după compresie. Te rugăm să încerci cu mai puține imagini.');
+    }
+    
+    // Create destination document
+    const docRef = await addDoc(collection(db, 'destinations'), docData);
     
     return { 
-      id: docRef.id, 
+      id: docRef.id,
       ...destination,
-      images: compressedImages,
+      images: processedImages,
       createdBy: {
         email: currentUser?.email || null
       }
@@ -133,7 +187,7 @@ export const deleteDestination = async (destinationId: string) => {
       throw new Error('You do not have permission to delete this destination');
     }
 
-    // If we get here, user has permission to delete
+    // Delete the document
     await deleteDoc(destinationRef);
   } catch (error) {
     console.error('Error deleting destination:', error);

@@ -8,9 +8,13 @@ service cloud.firestore {
     
     match /destinations/{destinationId} {
       allow read: if true;  // Anyone can read destinations
-      allow create: if request.auth != null;  // Must be logged in to create
-      allow update, delete: if isAdmin() || 
-        (request.auth != null && resource.data.userId == request.auth.uid);  // Admin or owner can update/delete
+      allow create: if request.auth != null &&
+                   request.resource.data.title is string &&
+                   request.resource.data.description is string &&
+                   request.resource.data.images is list &&
+                   request.resource.data.images.size() <= 10;  // Allow up to 10 images
+      allow update, delete: if request.auth != null && 
+        (isAdmin() || resource.data.userId == request.auth.uid);  // Admin or owner can update/delete
     }
   }
 } 

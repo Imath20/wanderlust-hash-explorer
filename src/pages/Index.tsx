@@ -288,7 +288,7 @@ const IndexContent = () => {
               hashtags: selectedDestination.hashtags,
               location: selectedDestination.location,
               images: selectedDestination.images.map(img => 
-                img.startsWith('data:') ? img : `https://images.unsplash.com/${img}?w=1600&h=1200&fit=crop&crop=entropy&auto=format&q=75`
+                img.startsWith('data:') ? img : `https://images.unsplash.com/${img}?w=2400&h=1800&fit=crop&crop=entropy&auto=format&q=100`
               )
             }}
             onClose={closeModal}
@@ -299,7 +299,8 @@ const IndexContent = () => {
         {/* Add Destination Modal */}
         {showAddModal && (
           <AddDestinationModal
-            onClose={() => setShowAddModal(false)}
+            show={showAddModal}
+            onHide={() => setShowAddModal(false)}
             onAdd={handleAddDestination}
           />
         )}
