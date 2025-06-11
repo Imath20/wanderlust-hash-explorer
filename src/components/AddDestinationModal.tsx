@@ -20,6 +20,7 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
     lng: 26.1025,
     name: 'România'
   });
+  const [isCompressing, setIsCompressing] = useState(false);
 
   // Disable body scrolling when modal is open
   useEffect(() => {
@@ -29,16 +30,68 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
     };
   }, []);
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const compressImage = async (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          // Calculate new dimensions while maintaining aspect ratio
+          const maxDimension = 800;
+          if (width > height && width > maxDimension) {
+            height = Math.round((height * maxDimension) / width);
+            width = maxDimension;
+          } else if (height > maxDimension) {
+            width = Math.round((width * maxDimension) / height);
+            height = maxDimension;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            reject(new Error('Could not get canvas context'));
+            return;
+          }
+
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Compress to JPEG with quality 0.7 (70%)
+          const compressedImage = canvas.toDataURL('image/jpeg', 0.7);
+          resolve(compressedImage);
+        };
+        img.onerror = () => {
+          reject(new Error('Failed to load image'));
+        };
+        img.src = event.target?.result as string;
+      };
+      reader.onerror = () => {
+        reject(new Error('Failed to read file'));
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
-      Array.from(files).forEach(file => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setImages(prev => [...prev, reader.result as string]);
-        };
-        reader.readAsDataURL(file);
-      });
+      setIsCompressing(true);
+      try {
+        const compressedImages = await Promise.all(
+          Array.from(files).map(file => compressImage(file))
+        );
+        setImages(prev => [...prev, ...compressedImages]);
+      } catch (error) {
+        console.error('Error compressing images:', error);
+        // You might want to show a toast or alert here
+      } finally {
+        setIsCompressing(false);
+      }
     }
   };
 
@@ -125,25 +178,33 @@ const AddDestinationModal = ({ onClose, onAdd }: AddDestinationModalProps) => {
               <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1 sm:mb-2">
                 Imagini <span className="text-red-500">*</span>
               </label>
-              <button
-                type="button"
-                onClick={() => document.getElementById('image-upload')?.click()}
-                className="w-full px-4 py-2 sm:py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 text-sm sm:text-base"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                </svg>
-                Încarcă Imagini
-              </button>
-              <input
-                id="image-upload"
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleImageUpload}
-                className="hidden"
-                required={images.length === 0}
-              />
+              <div className="relative">
+                <input
+                  type="file"
+                  onChange={handleImageUpload}
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  id="image-upload"
+                  disabled={isCompressing}
+                />
+                <label
+                  htmlFor="image-upload"
+                  className="inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-white bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 cursor-pointer transition-colors duration-200"
+                >
+                  {isCompressing ? (
+                    <span className="flex items-center">
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Se comprimă imaginile...
+                    </span>
+                  ) : (
+                    'Încarcă imagini'
+                  )}
+                </label>
+              </div>
               
               {images.length > 0 && (
                 <div className="mt-3 max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
