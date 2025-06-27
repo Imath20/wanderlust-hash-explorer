@@ -159,7 +159,7 @@ const TravelModal = ({ destination, onClose, onDelete }: TravelModalProps) => {
               </div>
 
               {/* Content Sidebar */}
-              <div className="lg:w-1/4 p-4 sm:p-6 flex flex-col h-full">
+              <div className="lg:w-1/4 p-4 sm:p-6 flex flex-col h-full bg-white dark:bg-[#232323] border-l border-gray-200 dark:border-[#333]">
                 <div className="space-y-4 flex-grow">
                   <h2 className="text-xl sm:text-2xl font-bold text-black dark:text-white break-words">
                     {destination.title}
@@ -176,7 +176,7 @@ const TravelModal = ({ destination, onClose, onDelete }: TravelModalProps) => {
                         key={index}
                         className="px-2 sm:px-3 py-1 bg-gray-100 dark:bg-[#242424] text-gray-700 dark:text-white text-xs sm:text-sm rounded-full font-medium border border-gray-200 dark:border-gray-600"
                       >
-                        #{tag}
+                        #{tag.replace(/^#/, '')}
                       </span>
                     ))}
                   </div>

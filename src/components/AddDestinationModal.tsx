@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 import { useDropzone } from 'react-dropzone';
 import { FaImage } from 'react-icons/fa';
@@ -83,6 +83,7 @@ const AddDestinationModal: React.FC<AddDestinationModalProps> = ({ show, onHide,
   const [loading, setLoading] = useState(false);
   const [currentHashtag, setCurrentHashtag] = useState('');
   const [showLocationPicker, setShowLocationPicker] = useState(false);
+  const [pendingNumSlots, setPendingNumSlots] = useState(numSlots);
 
   const handleImageDrop = (acceptedFiles: File[], slotIndex: number) => {
     if (acceptedFiles.length === 0) return;
@@ -147,16 +148,17 @@ const AddDestinationModal: React.FC<AddDestinationModalProps> = ({ show, onHide,
     });
   };
 
-  const handleNumSlotsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newNumSlots = Math.min(10, Math.max(1, parseInt(e.target.value) || 1));
+  const handleNumSlotsInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPendingNumSlots(Number(e.target.value));
+  };
+
+  const commitNumSlots = () => {
+    const newNumSlots = Math.min(10, Math.max(1, Number(pendingNumSlots) || 1));
     setNumSlots(newNumSlots);
     setImages(prev => {
       const newImages = Array(newNumSlots).fill('');
-      // Copy over existing images
       prev.forEach((img, i) => {
-        if (i < newNumSlots) {
-          newImages[i] = img;
-        }
+        if (i < newNumSlots) newImages[i] = img;
       });
       return newImages;
     });
@@ -267,6 +269,8 @@ const AddDestinationModal: React.FC<AddDestinationModalProps> = ({ show, onHide,
     );
   };
 
+  useEffect(() => { setPendingNumSlots(numSlots); }, [numSlots]);
+
   return (
     <>
       <Modal show={show} onHide={handleClose} centered>
@@ -325,12 +329,18 @@ const AddDestinationModal: React.FC<AddDestinationModalProps> = ({ show, onHide,
                 </label>
                 <input
                   type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   className="form-control"
                   min={1}
                   max={10}
-                  value={numSlots}
-                  onChange={handleNumSlotsChange}
+                  step={1}
+                  value={pendingNumSlots}
+                  onChange={handleNumSlotsInput}
+                  onBlur={commitNumSlots}
+                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); commitNumSlots(); } }}
                 />
+                <button type="button" className="btn btn-sm btn-secondary ms-2" style={{marginTop: 4}} onClick={() => { setPendingNumSlots(1); setNumSlots(1); setImages(Array(1).fill('')); }}>Reset</button>
               </div>
               <div className={styles.imageUploadsContainer}>
                 {Array.from({ length: numSlots }).map((_, index) => (

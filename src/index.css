@@ -102,3 +102,86 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* DARK MODE GLOBAL FIXES */
+html.dark, body.dark {
+  background: #242424 !important;
+  color: #fff !important;
+}
+
+html.dark .modal-content, body.dark .modal-content {
+  background: #232323 !important;
+  color: #fff !important;
+}
+
+html.dark .modal-header, body.dark .modal-header {
+  background: #232323 !important;
+  color: #fff !important;
+  border-bottom: 1px solid #333 !important;
+}
+
+html.dark .modal-body, body.dark .modal-body {
+  background: #232323 !important;
+  color: #fff !important;
+}
+
+html.dark .modal-title, body.dark .modal-title {
+  color: #fff !important;
+}
+
+html.dark label, body.dark label,
+html.dark .form-label, body.dark .form-label {
+  color: #fff !important;
+}
+
+html.dark input, body.dark input,
+html.dark textarea, body.dark textarea {
+  background: #181818 !important;
+  color: #fff !important;
+  border-color: #333 !important;
+}
+
+html.dark .form-control, body.dark .form-control {
+  background: #181818 !important;
+  color: #fff !important;
+  border-color: #333 !important;
+}
+
+html.dark ::placeholder, body.dark ::placeholder {
+  color: #bbb !important;
+  opacity: 1 !important;
+}
+
+html.dark .btn-close, body.dark .btn-close {
+  filter: invert(1);
+}
+
+/* Carduri și TravelCard */
+html.dark .bg-white, body.dark .bg-white {
+  background: #232323 !important;
+}
+html.dark .border, body.dark .border,
+html.dark .border-gray-200, body.dark .border-gray-200 {
+  border-color: #333 !important;
+}
+
+/* Spoturi imagini upload */
+html.dark .imageUploadSlot, body.dark .imageUploadSlot {
+  background: #111 !important;
+  border-color: #333 !important;
+}
+
+html.dark .imageUploadSlot:hover, body.dark .imageUploadSlot:hover {
+  background: #222 !important;
+  border-color: #3b82f6 !important;
+}
+
+html.dark .uploadPlaceholder, body.dark .uploadPlaceholder {
+  color: #bbb !important;
+}
+
+html.dark h1, body.dark h1,
+html.dark h2, body.dark h2,
+html.dark h3, body.dark h3 {
+  color: #fff !important;
+}

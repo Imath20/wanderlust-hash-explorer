@@ -9,7 +9,7 @@ interface TravelCardProps {
 const TravelCard = ({ destination, onClick }: TravelCardProps) => {
   return (
     <div 
-      className="bg-white dark:bg-[#242424] rounded-xl sm:rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:scale-[1.02] overflow-hidden group"
+      className="bg-white dark:bg-[#232323] border border-gray-200 dark:border-[#333] rounded-xl sm:rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:scale-[1.02] overflow-hidden group"
       onClick={onClick}
     >
       {/* Image */}
@@ -28,7 +28,7 @@ const TravelCard = ({ destination, onClick }: TravelCardProps) => {
           {destination.title}
         </h3>
         
-        <p className="text-sm sm:text-base text-gray-600 dark:text-white mb-3 sm:mb-4 line-clamp-3 leading-relaxed">
+        <p className="text-sm sm:text-base text-gray-600 dark:text-gray-200 mb-3 sm:mb-4 line-clamp-3 leading-relaxed">
           {destination.description}
         </p>
 
@@ -39,7 +39,7 @@ const TravelCard = ({ destination, onClick }: TravelCardProps) => {
               key={index}
               className="px-2 sm:px-3 py-1 bg-gray-100 dark:bg-[#242424] text-gray-700 dark:text-white text-xs sm:text-sm rounded-full font-medium border border-gray-200 dark:border-gray-600"
             >
-              #{tag}
+              #{tag.replace(/^#/, '')}
             </span>
           ))}
         </div>
