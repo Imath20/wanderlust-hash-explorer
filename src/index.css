@@ -185,3 +185,24 @@ html.dark h2, body.dark h2,
 html.dark h3, body.dark h3 {
   color: #fff !important;
 }
+
+/* Toast-uri pe dark mode */
+html.dark .group-hover\:opacity-100, body.dark .group-hover\:opacity-100 {
+  opacity: 1 !important;
+}
+
+html.dark .text-foreground\/50, body.dark .text-foreground\/50 {
+  color: #fff !important;
+}
+
+html.dark .hover\:text-foreground, body.dark .hover\:text-foreground {
+  color: #fff !important;
+}
+
+html.dark .group-\[\.destructive\]\:text-red-300, body.dark .group-\[\.destructive\]\:text-red-300 {
+  color: #fca5a5 !important;
+}
+
+html.dark .group-\[\.destructive\]\:hover\:text-red-50, body.dark .group-\[\.destructive\]\:hover\:text-red-50 {
+  color: #fef2f2 !important;
+}
