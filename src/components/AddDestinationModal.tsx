@@ -13,8 +13,8 @@ interface AddDestinationModalProps {
   onAdd: (destination: Omit<Destination, 'id'>) => void;
 }
 
-const MAX_IMAGE_SIZE = 600; // Reducem la 600px
-const COMPRESSION_QUALITY = 0.6; // Reducem calitatea la 60%
+const MAX_IMAGE_SIZE = 1200; // Mărim la 1200px pentru ImageKit
+const COMPRESSION_QUALITY = 0.8; // Mărim calitatea la 80%
 
 const compressImage = (base64String: string): Promise<string> => {
   return new Promise((resolve) => {
@@ -25,13 +25,15 @@ const compressImage = (base64String: string): Promise<string> => {
       let width = img.width;
       let height = img.height;
       
-      // Redimensionăm toate imaginile, indiferent de dimensiune
-      if (width > height) {
-        height = Math.round((height * MAX_IMAGE_SIZE) / width);
-        width = MAX_IMAGE_SIZE;
-      } else {
-        width = Math.round((width * MAX_IMAGE_SIZE) / height);
-        height = MAX_IMAGE_SIZE;
+      // Redimensionare doar dacă este necesar
+      if (width > MAX_IMAGE_SIZE || height > MAX_IMAGE_SIZE) {
+        if (width > height) {
+          height = Math.round((height * MAX_IMAGE_SIZE) / width);
+          width = MAX_IMAGE_SIZE;
+        } else {
+          width = Math.round((width * MAX_IMAGE_SIZE) / height);
+          height = MAX_IMAGE_SIZE;
+        }
       }
 
       canvas.width = width;
@@ -40,31 +42,11 @@ const compressImage = (base64String: string): Promise<string> => {
       const ctx = canvas.getContext('2d');
       ctx?.drawImage(img, 0, 0, width, height);
       
-      // Compresie mai agresivă pentru toate imaginile
+      // Compresie cu calitate mai bună pentru ImageKit
       const compressedImage = canvas.toDataURL('image/jpeg', COMPRESSION_QUALITY);
-      
-      // Verificăm dacă imaginea este încă prea mare și mai comprimăm o dată dacă este necesar
-      if (compressedImage.length > 100000) { // Dacă e mai mare de ~100KB
-        const secondCanvas = document.createElement('canvas');
-        const secondCtx = secondCanvas.getContext('2d');
-        const secondImg = new Image();
-        secondImg.src = compressedImage;
-        
-        secondImg.onload = () => {
-          // Reducem și mai mult dimensiunea pentru imaginile mari
-          const finalWidth = Math.round(width * 0.8);
-          const finalHeight = Math.round(height * 0.8);
-          
-          secondCanvas.width = finalWidth;
-          secondCanvas.height = finalHeight;
-          secondCtx?.drawImage(secondImg, 0, 0, finalWidth, finalHeight);
-          
-          resolve(secondCanvas.toDataURL('image/jpeg', COMPRESSION_QUALITY * 0.8));
-        };
-      } else {
-        resolve(compressedImage);
-      }
+      resolve(compressedImage);
     };
+    img.onerror = () => resolve(base64String); // Fallback la original
   });
 };
 

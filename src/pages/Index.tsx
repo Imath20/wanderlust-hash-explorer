@@ -9,7 +9,7 @@ import { travelDestinations } from '../data/travelData';
 import { Plus, LogIn, LogOut } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from '../components/ui/use-toast';
-import { Destination, addDestination, getDestinations } from '../services/destinationService';
+import { Destination, addDestination, getDestinations, getOptimizedDestinationImage } from '../services/destinationService';
 
 const Footer = () => (
   <footer className="w-full bg-white/80 dark:bg-[#242424]/80 backdrop-blur-sm py-6 mt-8">
@@ -245,7 +245,7 @@ const IndexContent = () => {
                   destination={{
                     ...destination,
                     images: destination.images.map(img => 
-                      img.startsWith('data:') ? img : `https://images.unsplash.com/${img}?w=800&h=600&fit=crop&crop=entropy&auto=format&q=75`
+                      getOptimizedDestinationImage(img, 800, 600)
                     )
                   }}
                   onClick={() => handleCardClick(destination)}
@@ -288,7 +288,7 @@ const IndexContent = () => {
               hashtags: selectedDestination.hashtags,
               location: selectedDestination.location,
               images: selectedDestination.images.map(img => 
-                img.startsWith('data:') ? img : `https://images.unsplash.com/${img}?w=2400&h=1800&fit=crop&crop=entropy&auto=format&q=100`
+                getOptimizedDestinationImage(img, 2400, 1800)
               )
             }}
             onClose={closeModal}
